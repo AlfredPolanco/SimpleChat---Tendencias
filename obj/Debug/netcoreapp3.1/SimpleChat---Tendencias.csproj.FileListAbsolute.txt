@@ -1,0 +1,4 @@
+C:\Users\USER\Documents\GitHub\SimpleChat---Tendencias\obj\Debug\netcoreapp3.1\SimpleChat---Tendencias.csprojAssemblyReference.cache
+C:\Users\USER\Documents\GitHub\SimpleChat---Tendencias\obj\Debug\netcoreapp3.1\SimpleChat---Tendencias.AssemblyInfoInputs.cache
+C:\Users\USER\Documents\GitHub\SimpleChat---Tendencias\obj\Debug\netcoreapp3.1\SimpleChat---Tendencias.AssemblyInfo.cs
+C:\Users\USER\Documents\GitHub\SimpleChat---Tendencias\obj\Debug\netcoreapp3.1\SimpleChat---Tendencias.csproj.CoreCompileInputs.cache
