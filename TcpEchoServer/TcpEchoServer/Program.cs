@@ -4,78 +4,147 @@ using System.Net.Sockets;
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 
 namespace TcpEchoServer
 {
     class Program
     {
+        public static List<(string, TcpClient)> clientsList = new List<(string, TcpClient)>();
+
         static void Main(string[] args)
         {
-            Console.WriteLine("Starting echo server...");
+            IPHostEntry host = Dns.GetHostEntry("localhost");
+            IPAddress ipAddress = host.AddressList[0];
+            //IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11000);
+            TcpListener serverSocket = new TcpListener(ipAddress, 1234);
+            TcpClient clientSocket = default;
+            int counter = 0;
 
-            int port = 1234;
-            TcpListener listener = new TcpListener(IPAddress.Loopback, port);
-            listener.Start();
-
-            List<TcpClient> clientList = new List<TcpClient>();
-
-            if (listener.Pending())
+            serverSocket.Start();
+            Console.WriteLine("Chat Server Started ....");
+            counter = 0;
+            while ((true))
             {
-                clientList.Add(new Client(listener));
-            }
-            //TcpClient client = listener.AcceptTcpClient();
-            //NetworkStream stream = client.GetStream();
-            //StreamWriter writer = new StreamWriter(stream, Encoding.ASCII) { AutoFlush = true };
-            //StreamReader reader = new StreamReader(stream, Encoding.ASCII);
+                try
+                {
+                    counter += 1;
+                    clientSocket = serverSocket.AcceptTcpClient();
 
-            //while (true)
-            //{
-            //	string inputLine = "";
-            //	//string stop = "Exit";
-            //	while (inputLine != null)
-            //	{
-            //		//if()
-            //		inputLine = reader.ReadLine();
-            //		writer.WriteLine("Echoing string: " + inputLine);
-            //		Console.WriteLine("Echoing string: " + inputLine);
-            //	}
-            //	Console.WriteLine("Server saw disconnect from client.");
-            //}
+                    byte[] bytesFrom = new byte[65536];
+                    string dataFromClient = null;
+
+                    NetworkStream networkStream = clientSocket.GetStream();
+                    StreamWriter writer = new StreamWriter(networkStream, Encoding.UTF32);
+                    StreamReader reader = new StreamReader(networkStream, Encoding.UTF32);
+                    string entryString = reader.ReadLine();
+                    if (entryString.ToLower().StartsWith("connect "))
+                    {
+                        entryString = entryString.Substring(8);
+                        entryString = entryString.Split(' ')[0];
+                        if (!clientsList.Any(item => item.Item1 == entryString))
+                        {
+                            clientsList.Add((entryString, clientSocket));
+                            dataFromClient = entryString;
+                            writer.WriteLine("Successfully connected to server!");
+                            Broadcast(dataFromClient + " Joined ", dataFromClient, false);
+
+                            Console.WriteLine(dataFromClient + " Joined chat room ");
+                            ClientHandler client = new ClientHandler();
+                            client.StartClient(clientSocket, dataFromClient, ref clientsList);
+
+                        }
+                    }
+                }
+                catch (IOException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+
+            clientSocket.Close();
+            serverSocket.Stop();
+            Console.WriteLine("exit");
+            Console.ReadLine();
+        }
+
+        public static void Broadcast(string msg, string userName, bool flag)
+        {
+            foreach (var item in clientsList)
+            {
+                TcpClient broadcastSocket;
+                broadcastSocket = item.Item2;
+                NetworkStream broadcastStream = broadcastSocket.GetStream();
+                byte[] broadcastMessage;
+                if (flag == true)
+                {
+                    broadcastMessage = Encoding.UTF32.GetBytes(userName + " says : " + msg);
+                }
+                else
+                {
+                    broadcastMessage = Encoding.UTF32.GetBytes(msg);
+                }
+
+                broadcastStream.Write(broadcastMessage, 0, broadcastMessage.Length);
+                broadcastStream.Flush();
+            }
         }
     }
-    //utf8
-    class Client
+
+
+    public class ClientHandler
     {
-        public TcpClient client;
-        public NetworkStream stream;
-        public StreamWriter writer;
-        public StreamReader reader;
+        TcpClient ClientSocket;
+        string ID;
+        List<(string, TcpClient)> ClientList;
 
-        public Client(TcpListener listener)
+        public void StartClient(TcpClient clientSocket, string clientUser, ref List<(string, TcpClient)> clientList)
         {
-            client = listener.AcceptTcpClient();
-            stream = client.GetStream();
-            writer = new StreamWriter(stream, Encoding.ASCII) { AutoFlush = true };
-            reader = new StreamReader(stream, Encoding.ASCII);
+            ClientSocket = clientSocket;
+            ID = clientUser;
+            ClientList = clientList;
+            Thread clientThread = new Thread(ChatHandler);
+            clientThread.Start();
+        }
 
-            bool connectionEstablished = false;
-            while (!connectionEstablished)
+        private void ChatHandler()
+        {
+            int requestCount = 0;
+            string dataFromClient;
+            string rCount;
+
+            while ((true))
             {
-                string inputLine = "";
-                while (!connectionEstablished)
+                try
                 {
-                    inputLine = reader.ReadLine();
-                    string[] answerArr = inputLine.Split(' ', 2);
-                    if (answerArr[0].ToLower() == "connect")
+                    requestCount = requestCount + 1;
+                    NetworkStream networkStream = ClientSocket.GetStream();
+                    StreamWriter writer = new StreamWriter(networkStream, Encoding.UTF32);
+                    StreamReader reader = new StreamReader(networkStream, Encoding.UTF32);
+                    dataFromClient = reader.ReadLine();
+                    if (dataFromClient.Split(' ')[0].ToLower() == "list_users")
                     {
-                        answerArr[1].Trim();
+                        writer.WriteLine("User List:");
+                        foreach (var item in ClientList)
+                        {
+                            writer.WriteLine(item);
+                        }
                     }
-                    else
+
+                    if (dataFromClient.Split(' ')[0].ToLower() == "send_message" && ClientList.Any(item => item.Item1 == dataFromClient.Split(' ')[1].ToLower()))
                     {
-                        writer.WriteLine("Please connect with a username");
-                        writer.WriteLine("Syntax: ");
-                        writer.WriteLine("    CONNECT user_name");
+
+                        Console.WriteLine("From client - " + ID + " : " + "\"" + dataFromClient + "\"" + " to ");
                     }
+                    Console.WriteLine("From client - " + ID + " : " + dataFromClient);
+                    rCount = Convert.ToString(requestCount);
+
+                    Program.Broadcast(dataFromClient, ID, true);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
                 }
             }
         }
