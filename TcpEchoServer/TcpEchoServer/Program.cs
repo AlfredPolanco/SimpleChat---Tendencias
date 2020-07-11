@@ -107,7 +107,11 @@ namespace TcpEchoServer
             Thread clientThread = new Thread(ChatHandler);
             clientThread.Start();
         }
-
+        ~ClientHandler()
+        {
+            Console.WriteLine("Client named " + ID + " left the chat room");
+            Program.Broadcast("Client named " + ID + " left the chat room", ID, false);
+        }
         private void ChatHandler()
         {
             int requestCount = 0;
@@ -123,6 +127,8 @@ namespace TcpEchoServer
                     StreamWriter writer = new StreamWriter(networkStream, Encoding.UTF32);
                     StreamReader reader = new StreamReader(networkStream, Encoding.UTF32);
                     dataFromClient = reader.ReadLine();
+                    
+                    //List_Users
                     if (dataFromClient.Split(' ')[0].ToLower() == "list_users")
                     {
                         writer.WriteLine("User List:");
@@ -130,17 +136,32 @@ namespace TcpEchoServer
                         {
                             writer.WriteLine(item);
                         }
+                        rCount = Convert.ToString(requestCount);
                     }
 
+                    //Message
                     if (dataFromClient.Split(' ')[0].ToLower() == "send_message" && ClientList.Any(item => item.Item1 == dataFromClient.Split(' ')[1].ToLower()))
                     {
-
-                        Console.WriteLine("From client - " + ID + " : " + "\"" + dataFromClient + "\"" + " to ");
+                        (string,TcpClient) clientSelected = ClientList.Find(item => item.Item1 == dataFromClient.Split(' ')[1].ToLower());
+                        new StreamWriter(clientSelected.Item2.GetStream(), Encoding.UTF32).WriteLine("From client - " + ID + " : " + dataFromClient);
+                        Console.WriteLine("From client - " + ID + " : " + "\"" + dataFromClient + "\"" + " to " + clientSelected.Item1);
+                        rCount = Convert.ToString(requestCount);
                     }
-                    Console.WriteLine("From client - " + ID + " : " + dataFromClient);
-                    rCount = Convert.ToString(requestCount);
 
-                    Program.Broadcast(dataFromClient, ID, true);
+                    if (dataFromClient.Split(' ')[0].ToLower() == "exit")
+                    {
+                        writer.Close();
+                        reader.Close();
+                        networkStream.Close();
+                        ClientSocket.Close();
+                    }
+                    //Global Test
+                    //else
+                    //{
+                    //Console.WriteLine("From client - " + ID + " : " + dataFromClient);
+                    //rCount = Convert.ToString(requestCount);
+                    //Program.Broadcast(dataFromClient, ID, true);
+                    //}
                 }
                 catch (Exception ex)
                 {
