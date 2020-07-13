@@ -4,6 +4,9 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Linq;
+using System.Threading;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Client
 {
@@ -35,23 +38,54 @@ namespace Client
             }
 
             System.Console.WriteLine();
-            messageToServer = string.Join(" ", input.ToArray());
+
 
             int port = 1234;
             TcpClient client = new TcpClient("localhost", port);
             NetworkStream stream = client.GetStream();
-            StreamReader reader = new StreamReader(stream);
-            StreamWriter writer = new StreamWriter(stream) { AutoFlush = true };
-
+            StreamWriter writer = new StreamWriter(stream, Encoding.ASCII) { AutoFlush = true };
+            Thread serverReaderThread = new Thread(() => ReaderHandler(ref stream));
+            serverReaderThread.Start();
             while (true)
             {
                 Console.WriteLine("Sending to server: " + "'" + messageToServer + "'");
                 writer.WriteLine(messageToServer);
-                string lineReceived = reader.ReadLine();
-                Console.WriteLine("Received from server: " + lineReceived);
+                /*
+                Para evitar que se imprima "Escriba un comando" en la misma linea que
+                "Received from server: ...". 
+                */
+                Thread.Sleep(500);
+                GetUserInput();
+                if (messageToServer.Equals("exit"))
+                {
+                    Console.WriteLine("Sending to server: " + "'" + messageToServer + "'");
+                    writer.WriteLine(messageToServer);
+                    break;
+                }
             }
         }
 
+        static void ReaderHandler(ref NetworkStream networkStream)
+        {
+            StreamReader reader = new StreamReader(networkStream, Encoding.ASCII);
+            while ((true))
+            {
+                try
+                {
+                    string lineReceived = reader.ReadLine();
+                    Console.WriteLine("Received from server: " + lineReceived);
+                    if (messageToServer.Equals("exit"))
+                    {
+                        break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+            }
+
+        }
         static void GetUserInput()
         {
             System.Console.Write("Escriba un comando: ");
@@ -61,6 +95,7 @@ namespace Client
                     return e.Trim();
                 }).ToList();
             command = input[0];
+            messageToServer = string.Join(" ", input.ToArray());
         }
 
         static bool isCommandInvalid()

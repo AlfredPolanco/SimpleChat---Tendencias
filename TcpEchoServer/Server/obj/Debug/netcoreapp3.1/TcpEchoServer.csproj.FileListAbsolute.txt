@@ -1,0 +1,13 @@
+C:\Users\USER\Documents\GitHub\SimpleChat---Tendencias\TcpEchoServer\TcpEchoServer\bin\Debug\netcoreapp3.1\TcpEchoServer.exe
+C:\Users\USER\Documents\GitHub\SimpleChat---Tendencias\TcpEchoServer\TcpEchoServer\bin\Debug\netcoreapp3.1\TcpEchoServer.deps.json
+C:\Users\USER\Documents\GitHub\SimpleChat---Tendencias\TcpEchoServer\TcpEchoServer\bin\Debug\netcoreapp3.1\TcpEchoServer.runtimeconfig.json
+C:\Users\USER\Documents\GitHub\SimpleChat---Tendencias\TcpEchoServer\TcpEchoServer\bin\Debug\netcoreapp3.1\TcpEchoServer.runtimeconfig.dev.json
+C:\Users\USER\Documents\GitHub\SimpleChat---Tendencias\TcpEchoServer\TcpEchoServer\bin\Debug\netcoreapp3.1\TcpEchoServer.dll
+C:\Users\USER\Documents\GitHub\SimpleChat---Tendencias\TcpEchoServer\TcpEchoServer\bin\Debug\netcoreapp3.1\TcpEchoServer.pdb
+C:\Users\USER\Documents\GitHub\SimpleChat---Tendencias\TcpEchoServer\TcpEchoServer\obj\Debug\netcoreapp3.1\TcpEchoServer.csprojAssemblyReference.cache
+C:\Users\USER\Documents\GitHub\SimpleChat---Tendencias\TcpEchoServer\TcpEchoServer\obj\Debug\netcoreapp3.1\TcpEchoServer.AssemblyInfoInputs.cache
+C:\Users\USER\Documents\GitHub\SimpleChat---Tendencias\TcpEchoServer\TcpEchoServer\obj\Debug\netcoreapp3.1\TcpEchoServer.AssemblyInfo.cs
+C:\Users\USER\Documents\GitHub\SimpleChat---Tendencias\TcpEchoServer\TcpEchoServer\obj\Debug\netcoreapp3.1\TcpEchoServer.csproj.CoreCompileInputs.cache
+C:\Users\USER\Documents\GitHub\SimpleChat---Tendencias\TcpEchoServer\TcpEchoServer\obj\Debug\netcoreapp3.1\TcpEchoServer.dll
+C:\Users\USER\Documents\GitHub\SimpleChat---Tendencias\TcpEchoServer\TcpEchoServer\obj\Debug\netcoreapp3.1\TcpEchoServer.pdb
+C:\Users\USER\Documents\GitHub\SimpleChat---Tendencias\TcpEchoServer\TcpEchoServer\obj\Debug\netcoreapp3.1\TcpEchoServer.genruntimeconfig.cache

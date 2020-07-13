@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\raule\\Source\\Repos\\AlfredPolanco\\SimpleChat---Tendencias\\TcpEchoServer\\TcpEchoServer\\TcpEchoServer.csproj": {}
+    "C:\\Users\\USER\\Documents\\GitHub\\SimpleChat---Tendencias\\TcpEchoServer\\TcpEchoServer\\TcpEchoServer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\raule\\Source\\Repos\\AlfredPolanco\\SimpleChat---Tendencias\\TcpEchoServer\\TcpEchoServer\\TcpEchoServer.csproj": {
+    "C:\\Users\\USER\\Documents\\GitHub\\SimpleChat---Tendencias\\TcpEchoServer\\TcpEchoServer\\TcpEchoServer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\raule\\Source\\Repos\\AlfredPolanco\\SimpleChat---Tendencias\\TcpEchoServer\\TcpEchoServer\\TcpEchoServer.csproj",
+        "projectUniqueName": "C:\\Users\\USER\\Documents\\GitHub\\SimpleChat---Tendencias\\TcpEchoServer\\TcpEchoServer\\TcpEchoServer.csproj",
         "projectName": "TcpEchoServer",
-        "projectPath": "C:\\Users\\raule\\Source\\Repos\\AlfredPolanco\\SimpleChat---Tendencias\\TcpEchoServer\\TcpEchoServer\\TcpEchoServer.csproj",
-        "packagesPath": "C:\\Users\\raule\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\raule\\Source\\Repos\\AlfredPolanco\\SimpleChat---Tendencias\\TcpEchoServer\\TcpEchoServer\\obj\\",
+        "projectPath": "C:\\Users\\USER\\Documents\\GitHub\\SimpleChat---Tendencias\\TcpEchoServer\\TcpEchoServer\\TcpEchoServer.csproj",
+        "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\USER\\Documents\\GitHub\\SimpleChat---Tendencias\\TcpEchoServer\\TcpEchoServer\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\raule\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -47,18 +50,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[3.1.2, 3.1.2]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.300\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.301\\RuntimeIdentifierGraph.json"
         }
       }
     }
