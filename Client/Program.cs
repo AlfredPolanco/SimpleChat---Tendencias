@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -40,8 +40,8 @@ namespace Client
             System.Console.WriteLine();
 
 
-            int port = 1234;
-            TcpClient client = new TcpClient("localhost", port);
+            int port = 8000;
+            TcpClient client = new TcpClient("186.7.96.158", port);
             NetworkStream stream = client.GetStream();
             StreamWriter writer = new StreamWriter(stream, Encoding.ASCII) { AutoFlush = true };
             Thread serverReaderThread = new Thread(() => ReaderHandler(ref stream));
@@ -91,9 +91,9 @@ namespace Client
             System.Console.Write("Escriba un comando: ");
             userInput = Console.ReadLine();
             input = userInput.Split(" ").ToList().Select(e =>
-                {
-                    return e.Trim();
-                }).ToList();
+            {
+                return e.Trim();
+            }).ToList();
             command = input[0];
             messageToServer = string.Join(" ", input.ToArray());
         }
