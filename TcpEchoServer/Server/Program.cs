@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.IO;
@@ -6,8 +6,10 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Net.WebSockets;
 
-namespace TcpEchoServer
+namespace Server
 {
     class Program
     {
@@ -15,10 +17,9 @@ namespace TcpEchoServer
 
         static void Main(string[] args)
         {
-            IPHostEntry host = Dns.GetHostEntry("localhost");
-            IPAddress ipAddress = host.AddressList[0];
-            //IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11000);
-            TcpListener serverSocket = new TcpListener(ipAddress, 1234);
+            IPHostEntry host = Dns.GetHostEntry("Alfre");
+            IPAddress ipAddress = host.AddressList[3];
+            TcpListener serverSocket = new TcpListener(ipAddress, 8000);
             TcpClient clientSocket = default;
             int counter = 0;
 
@@ -179,7 +180,7 @@ namespace TcpEchoServer
                 catch (Exception ex)
                 {
                     Console.WriteLine(this.ID + " has left the server");
-                    ClientList.RemoveAll(item=> item.Item1.Equals(this.ID));
+                    ClientList.RemoveAll(item => item.Item1.Equals(this.ID));
                     Program.Broadcast(this.ID + " left the server", this.ID, false);
                     x = false;
                     writer.Close();
