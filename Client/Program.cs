@@ -39,9 +39,9 @@ namespace Client
 
             System.Console.WriteLine();
 
-
             int port = 8000;
-            TcpClient client = new TcpClient("186.7.96.158", port);
+            TcpClient client = new TcpClient();
+            client.Connect("186.7.96.158", 8000);
             NetworkStream stream = client.GetStream();
             StreamWriter writer = new StreamWriter(stream, Encoding.ASCII) { AutoFlush = true };
             Thread serverReaderThread = new Thread(() => ReaderHandler(ref stream));
@@ -90,7 +90,7 @@ namespace Client
         {
             System.Console.Write("Escriba un comando: ");
             userInput = Console.ReadLine();
-            input = userInput.Split(" ").ToList().Select(e =>
+            input = userInput.Split(' ').ToList().Select(e =>
             {
                 return e.Trim();
             }).ToList();
@@ -126,7 +126,7 @@ namespace Client
                         System.Console.WriteLine("El formato para enviar mensajes: SEND_MESSAGE [nombre del receptor(sin espacios)] [mensaje]");
                         isInvalid = true;
                     }
-                    else if (input[1].Split(" ").LongCount() > 1)
+                    else if (input[1].Split(' ').LongCount() > 1)
                     {
                         System.Console.WriteLine("El nombre de usuario no puede tener espacios. Usa '_' o '-' para separar.");
                         isInvalid = true;
