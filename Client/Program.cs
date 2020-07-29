@@ -41,7 +41,7 @@ namespace Client
 
             int port = 8000;
             TcpClient client = new TcpClient();
-            client.Connect("186.7.96.158", 8000);
+            client.Connect("1.1.1.1", 8000);
             NetworkStream stream = client.GetStream();
             StreamWriter writer = new StreamWriter(stream, Encoding.ASCII) { AutoFlush = true };
             Thread serverReaderThread = new Thread(() => ReaderHandler(ref stream));
