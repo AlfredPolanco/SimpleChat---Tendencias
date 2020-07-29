@@ -17,7 +17,7 @@ namespace Server
 
         static void Main(string[] args)
         {
-            IPHostEntry host = Dns.GetHostEntry("Alfre");
+            IPHostEntry host = Dns.GetHostEntry("User");
             IPAddress ipAddress = host.AddressList[3];
             TcpListener serverSocket = new TcpListener(ipAddress, 8000);
             TcpClient clientSocket = default;
